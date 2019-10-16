@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+#ul1,li{
+	list-style: none;
+}
+li{
+	display: flex;
+}
+li .name{
+	display: inline-block;
+	min-width: 10%;
+	max-width: 20%;
+	padding-right: 20px;
+}
+li .name span{
+	display: inline-block;
+	width: 95%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+li .name::after{
+	content: '：';
+	position: absolute;
+}
+li text{
+	width: 80%;
+}
+</style>
+<script>
+
+// var ws = new WebSocket("ws://localhost:9000");
+var ws = new WebSocket("ws://"+window.location.host);
+
+//建立连接
+ws.onopen = function(ev) { 
+  console.log("连接成功"); 
+};
+
+//接收数据
+ws.onmessage = function(ev) {
+  console.log( "接收数据",ev.data);//server--->client
+  //发送数据
+  //ws.send("client--->server");
+  try{
+	  //只处理json
+	  var json = JSON.parse(ev.data);
+	  console.log(json);
+	  if(json.type == "click"){
+		  var oSpan = document.getElementById("s1");
+		  oSpan.innerHTML = json.value;
+		}
+		createLi(json);
+  }catch(e){
+	  
+  }
+};
+
+//连接关闭
+ws.onclose = function(evt) {
+  console.log("连接关闭");
+};     
+function createLi(data){
+	var oUl = document.getElementById("ul1")
+		//创建dom
+	var oLi = document.createElement("li");
+	oLi.innerHTML = `<strong class="name"><span>${data.name}</span></strong> <span class="text">${data.value}</span>`	;
+	oUl.appendChild(oLi);	
+	oUl.scrollTop = oUl.scrollHeight;
+		
+}
+
+window.onload = function(){
+	var name = prompt('请输入你的用户名')
+	var oBtn = document.getElementById("btn1");
+	if(!name){
+		name = '匿名'+ new Date().getTime()
+	}
+	oBtn.onclick = function(){
+		var Text = document.getElementById("text");
+		//发送数据 只能发送字符串 
+		ws.send(JSON.stringify({type:"click", name:name, value:Text.value}));
+	};
+	
+}
+
+
+
+</script>
+</head>
+
+<body>
+
+h5 WebSocket <br/>
+<textarea type="text" id = 'text'></textarea>
+
+<input id="btn1" type="button" value="发送"/> 发送内容：<span id="s1">1111</span>
+<ul id="ul1">
+</ul>
+</body>
+</html>

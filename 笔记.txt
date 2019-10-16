@@ -1,0 +1,96 @@
+
+
+websocket 一种通信协议  
+
+ajax/jsonp  单工通信
+
+websocket  全双工通信  性能高 速度快
+
+------------------------------------------------
+
+2种方式：
+
+1、前端的websocket
+2、后端的 socket.io
+
+
+https://socket.io/
+cnpm i socket.io
+
+接收on  发送emit ——可以发送任意类型的数据
+
+
+
+后端：
+
+1、创建httpServer
+2、创建wsServer  var ws = io(httpServer);
+3、连接 
+   ws.on("connect",function(socket){
+   		
+   		//45  发送或者接收  
+   		发送  socket.emit("名称"，数据); 
+   		广播  socket.broadcast.emit("名称"，数据); 
+   		接收  socket.on(名称，function(data——数据){
+   			
+   		      });
+   
+   });
+
+前端：
+1、引入js  src="/socket.io/socket.io.js"
+2、连接
+   var ws = io("ws://ip:port");
+3、发送接收 on/emit
+
+------------------------------------------------------
+前端H5 WebSocket
+
+ws: http
+wss:https
+
+
+var ws = new WebSocket("ws://ip:port");
+
+ws.onopen = function(evt) { 
+  console.log("Connection open ..."); 
+  ws.send("Hello WebSockets!");
+};
+
+ws.onmessage = function(evt) {
+  console.log( "Received Message: " + evt.data);
+  ws.close();
+};
+
+ws.onclose = function(evt) {
+  console.log("Connection closed.");
+};      
+
+
+后端：npm i ws
+
+https://www.npmjs.com/package/ws
+
+var wss = new WebSocket({server:httpServer});
+
+wss.on("connection",function(ws,req){
+
+		发送 接收
+		
+		接收
+		ws.onmessage(function(ev){
+			//数据 ev.data
+			
+	  });
+	  
+	  发送：
+	  ws.send(数据);
+	  
+	  数据 最好只能是字符串！！！
+	
+});
+
+
+
+
+

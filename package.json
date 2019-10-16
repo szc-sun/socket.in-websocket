@@ -1,0 +1,16 @@
+{
+  "name": "sun",
+  "version": "1.0.0",
+  "description": "'socket.io和websocket通信'",
+  "main": "chat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "sun",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^2.3.0",
+    "ws": "^7.1.2"
+  }
+}

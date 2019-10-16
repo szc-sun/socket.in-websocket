@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+#div1{position:absolute;left:0;top:0;width:100px; height:100px; background:red;}
+</style>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+// var ws = io("ws://localhost:9000");
+var ws = io("ws://" + window.location.host)
+
+window.onload = function(){
+	var oDiv = document.getElementById("div1");
+	
+	oDiv.onmousedown = function(ev){
+		
+		var disX = ev.clientX - oDiv.offsetLeft;
+		var disY = ev.clientY - oDiv.offsetTop;
+		
+		document.onmousemove = function(ev){
+			oDiv.style.left = ev.clientX - disX +"px";	
+			oDiv.style.top = ev.clientY - disY +"px";	
+			
+			ws.emit("pos",{left:oDiv.offsetLeft,top:oDiv.offsetTop});
+			
+		};
+		
+		document.onmouseup = function(){
+			document.onmousemove = null;
+			document.onmouseup = null;
+		};
+		return false;
+	};
+	
+	//接收数据
+	ws.on("pos_msg",function(data){
+		console.log(data);
+		oDiv.style.left = data.left + "px";
+		oDiv.style.top = data.top + "px";	
+	});
+}; 
+</script>
+</head>
+
+<body>
+<div id="div1"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
